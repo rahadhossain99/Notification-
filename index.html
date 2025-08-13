@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন প্যানেল</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+        .loader { border-top-color: #3498db; -webkit-animation: spin 1s linear infinite; animation: spin 1s linear infinite; }
+        @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #admin-dashboard { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- লগইন সেকশন -->
+    <div id="login-section" class="flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8 m-4">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">অ্যাডমিন লগইন</h2>
+            
+            <!-- গুগল লগইন বাটন -->
+            <button id="google-login-button" class="w-full flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md px-6 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#4285F4" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#34A853" d="m43.611 20.083-7.537 6.42C38.093 29.324 35.279 32 32 32c-2.454 0-4.633-.926-6.357-2.468l-7.537 6.42C20.446 39.947 24.947 42 30 42c6.4 0 11.9-3.3 15.1-8.2l-6.489-4.717z"/><path fill="#FBBC05" d="M15.643 25.532c-.27-.816-.428-1.68-.428-2.532s.158-1.716.428-2.532l-7.537-6.42C7.053 15.947 6 18.417 6 21s1.053 5.053 2.106 6.954l7.537-6.42z"/><path fill="#EA4335" d="M24 12c-3.246 0-6.166 1.4-8.254 3.643l-7.537-6.42C11.834 5.4 17.55 4 24 4c5.053 0 9.554 1.947 12.961 5.039l-5.657 5.657C29.842 13.154 27.059 12 24 12z"/></svg>
+                <span>গুগল দিয়ে সাইন ইন করুন</span>
+            </button>
+
+            <div class="my-4 flex items-center before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+                <p class="text-center font-semibold mx-4 mb-0">অথবা</p>
+            </div>
+
+            <!-- ইমেইল/পাসওয়ার্ড ফর্ম -->
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">ইমেইল</label>
+                    <input type="email" id="email" class="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" value="smartwork19999@gmail.com" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">পাসওয়ার্ড</label>
+                    <input type="password" id="password" class="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="********" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    লগইন করুন
+                </button>
+            </form>
+            <p id="login-error-message" class="text-red-500 text-center mt-4"></p>
+        </div>
+    </div>
+
+    <!-- অ্যাডমিন ড্যাশবোর্ড সেকশন (লুকানো থাকবে) -->
+    <div id="admin-dashboard">
+        <!-- নেভিগেশন বার -->
+        <nav class="bg-white shadow-md">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="flex justify-between">
+                    <div class="flex items-center py-4 px-2">
+                        <span id="welcome-message" class="font-semibold text-gray-600 text-lg"></span>
+                    </div>
+                    <div class="flex items-center">
+                        <button id="logout-button" class="py-2 px-2 font-medium text-white bg-red-500 rounded hover:bg-red-400 transition duration-300">লগআউট</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- জোকস পোস্ট করার ফর্ম -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 mt-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">নতুন জোকস পোস্ট করুন</h2>
+            <form id="joke-form">
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 text-sm font-bold mb-2">টাইটেল</label>
+                    <input type="text" id="title" class="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="জোকসের টাইটেল" required>
+                </div>
+                <div class="mb-4">
+                    <label for="content" class="block text-gray-700 text-sm font-bold mb-2">বিস্তারিত</label>
+                    <textarea id="content" rows="4" class="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="এখানে জোকসটি লিখুন..." required></textarea>
+                </div>
+                <div class="mb-6">
+                    <label for="image-url" class="block text-gray-700 text-sm font-bold mb-2">ছবির লিংক (ঐচ্ছিক)</label>
+                    <input type="url" id="image-url" class="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="flex items-center justify-center">
+                    <button type="submit" id="submit-button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full flex items-center justify-center">
+                        <span id="button-text">পোস্ট ও নোটিফাই করুন</span>
+                        <div id="loader" class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6 ml-3 hidden"></div>
+                    </button>
+                </div>
+            </form>
+            <p id="status-message" class="text-center mt-4"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // আপনার দেওয়া Firebase কনফিগারেশন
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTvWKR6pt8HrHoiDHo3wqoSXtXdXJjHHQ",
+            authDomain: "priya-ai-q14sj.firebaseapp.com",
+            projectId: "priya-ai-q14sj",
+            storageBucket: "priya-ai-q14sj.appspot.com",
+            messagingSenderId: "113852032496",
+            appId: "1:113852032496:web:46915d7643f1dabb9ae935"
+        };
+        
+        // Firebase মডিউল ইমপোর্ট
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Firebase ইনিশিয়ালাইজ
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // DOM এলিমেন্ট
+        const loginSection = document.getElementById('login-section');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        const googleLoginButton = document.getElementById('google-login-button');
+        const loginForm = document.getElementById('login-form');
+        const loginErrorMessage = document.getElementById('login-error-message');
+        const logoutButton = document.getElementById('logout-button');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const jokeForm = document.getElementById('joke-form');
+        const submitButton = document.getElementById('submit-button');
+        const buttonText = document.getElementById('button-text');
+        const loader = document.getElementById('loader');
+        const statusMessage = document.getElementById('status-message');
+
+        const ADMIN_EMAIL = 'smartwork19999@gmail.com';
+
+        // অথেনটিকেশন স্টেট পরিবর্তন হলে UI আপডেট করুন
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email === ADMIN_EMAIL) {
+                loginSection.style.display = 'none';
+                adminDashboard.style.display = 'block';
+                welcomeMessage.textContent = `স্বাগতম, ${user.displayName || user.email}`;
+            } else {
+                loginSection.style.display = 'flex';
+                adminDashboard.style.display = 'none';
+                if (user) { // যদি কোনো অন্য ইউজার লগইন করে
+                    signOut(auth); // তাকে সাইন আউট করে দিন
+                    loginErrorMessage.textContent = 'এই অ্যাকাউন্ট দিয়ে প্রবেশের অনুমতি নেই।';
+                }
+            }
+        });
+
+        // গুগল লগইন বাটন হ্যান্ডেল
+        googleLoginButton.addEventListener('click', () => {
+            loginErrorMessage.textContent = '';
+            signInWithPopup(auth, googleProvider)
+                .then((result) => {
+                    // সফল লগইনের পর onAuthStateChanged নিজে থেকেই কাজ করবে
+                    console.log('Google সাইন ইন সফল:', result.user);
+                }).catch((error) => {
+                    console.error('Google সাইন ইন এ সমস্যা:', error);
+                    loginErrorMessage.textContent = 'Google সাইন ইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
+                });
+        });
+
+        // ইমেইল/পাসওয়ার্ড লগইন ফর্ম সাবমিট হ্যান্ডেল
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            loginErrorMessage.textContent = '';
+
+            signInWithEmailAndPassword(auth, email, password)
+                .catch((error) => {
+                    console.error('লগইন এ সমস্যা:', error);
+                    loginErrorMessage.textContent = 'ভুল পাসওয়ার্ড অথবা আপনার এই ইমেইল দিয়ে প্রবেশের অনুমতি নেই।';
+                });
+        });
+
+        // লগআউট বাটন হ্যান্ডেল
+        logoutButton.addEventListener('click', () => {
+            signOut(auth).catch((error) => console.error('লগআউট এ সমস্যা:', error));
+        });
+
+        // জোকস ফর্ম সাবমিট হ্যান্ডেল
+        jokeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            buttonText.classList.add('hidden');
+            loader.classList.remove('hidden');
+            submitButton.disabled = true;
+            statusMessage.textContent = '';
+
+            try {
+                await addDoc(collection(db, "jokes"), {
+                    title: document.getElementById('title').value,
+                    content: document.getElementById('content').value,
+                    imageUrl: document.getElementById('image-url').value,
+                    createdAt: serverTimestamp()
+                });
+                statusMessage.textContent = 'সফলভাবে পোস্ট করা হয়েছে!';
+                statusMessage.className = 'text-green-500 text-center mt-4';
+                jokeForm.reset();
+            } catch (error) {
+                console.error("ডেটা যোগ করতে সমস্যা: ", error);
+                statusMessage.textContent = 'পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+                statusMessage.className = 'text-red-500 text-center mt-4';
+            } finally {
+                buttonText.classList.remove('hidden');
+                loader.classList.add('hidden');
+                submitButton.disabled = false;
+                setTimeout(() => { statusMessage.textContent = ''; }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
